@@ -2,6 +2,8 @@
 #include <iostream>
 #include <sstream>      // std::stringstream
 
+#ifndef IPV4
+#define IPV4
 class ipv4 {
 private:
 	std::array<unsigned char, 4> address;
@@ -17,6 +19,10 @@ public:
 	ipv4(ipv4 const & other) noexcept : address(other.address) {}
 	
 	ipv4& operator=(ipv4 const  & other) noexcept;
+	
+	ipv4& operator++();
+	
+	ipv4& operator++(int);
 	
 	std::string to_string() const;
 	
@@ -40,4 +46,30 @@ public:
 			is.setstate(std::ios_base::failbit);
 		return is;
 	};
+
+	friend bool operator==(ipv4 const  & ip1, ipv4 const  & ip2) noexcept{
+		return ip1.address == ip2.address;
+	};
+	
+	friend bool operator!=(ipv4 const  & ip1, ipv4 const  & ip2) noexcept{
+		return ip1.address != ip2.address;
+	};
+	
+	friend bool operator>(ipv4 const  & ip1, ipv4 const  & ip2) noexcept{
+		return ip1.to_unsigned_long() > ip2.to_unsigned_long();
+	};
+	
+	friend bool operator<(ipv4 const  & ip1, ipv4 const  & ip2) noexcept{
+		return ip2 > ip1;
+	};
+	
+	friend bool operator>=(ipv4 const  & ip1, ipv4 const  & ip2) noexcept{
+		return !(ip1 < ip2);
+	};
+	
+	friend bool operator<=(ipv4 const  & ip1, ipv4 const  & ip2) noexcept{
+		return !(ip1 > ip2);
+	};
 };
+
+#endif
